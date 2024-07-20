@@ -1,3 +1,3 @@
 # portofolio
 
-A new Flutter project.
+Juniel Djossou's portfolio

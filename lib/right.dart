@@ -11,7 +11,7 @@ class RightColumn extends StatefulWidget {
   static const Color textColor = Color.fromARGB(255, 126, 126, 126);//Color.fromARGB(255, 49, 46, 46); 
   static const TextStyle boldStyle = TextStyle(color: Colors.black,);
 
-  static const String _befriendUrl = 'https://github.com/MizuPanda/befriend';
+  static const String _befriendUrl = 'https://befriendesc.com';
 
   @override
   State<RightColumn> createState() => _RightColumnState();
