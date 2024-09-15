@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portofolio/constants.dart';
 import 'package:portofolio/provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,10 +18,14 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    
     return SizedBox(
-      width: 200, // Set your desired width for the navigation menu
+      width: 200/Constants.width*width, // Set your desired width for the navigation menu
       child: Consumer<AppProvider>(
           builder: (BuildContext context, AppProvider provider, Widget? child) {
+
         return ListView(
           children: [
             NavItem(
@@ -28,7 +33,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 title: 'about',
                 isSelected: _selectedIdx == 0,
                 onTap: () {
-                  provider.scrollToItem(0);
+                  provider.scrollToItem(0, height);
                   setState(() {
                     _selectedIdx = 0;
                   });
@@ -38,7 +43,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 title: 'projects',
                 isSelected: _selectedIdx == 1,
                 onTap: () {
-                  provider.scrollToItem(1);
+                  provider.scrollToItem(1, height);
                   setState(() {
                     _selectedIdx = 1;
                   });
@@ -48,7 +53,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 title: 'experience',
                 isSelected: _selectedIdx == 2,
                 onTap: () {
-                  provider.scrollToItem(2);
+                  provider.scrollToItem(2, height);
                   setState(() {
                     _selectedIdx = 2;
                   });
@@ -81,6 +86,9 @@ class _NavItemState extends State<NavItem> {
   bool _isHovered = false;
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
     return MouseRegion(
       onEnter: (_) {
         setState(() {
@@ -99,29 +107,36 @@ class _NavItemState extends State<NavItem> {
           duration: const Duration(milliseconds: 150),
           padding: EdgeInsets.only(
               left: widget.isSelected
-                  ? 20.0
+                  ? 20.0/Constants.width*width
                   : _isHovered
-                      ? 10.0
+                      ? 10.0/Constants.width*width
                       : 0.0,
-              top: 5.0,
-              bottom: 5.0),
+              top: 5.0/Constants.height*height,
+              bottom: 5.0/Constants.height*height),
           child: Row(
-            children: [
-              Icon(
-                widget.iconData,
-                size: 8,
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(widget.title,
-                  style: GoogleFonts.openSans(
-                      fontWeight: widget.isSelected || _isHovered
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                      fontSize: 16)),
-            ],
-          ),
+  children: [
+    Icon(
+      widget.iconData,
+      size: 8,
+    ),
+    SizedBox(
+      width: 5 / Constants.width * width,
+    ),
+    Flexible(
+      child: Text(
+        widget.title,
+        style: GoogleFonts.openSans(
+          fontWeight: widget.isSelected || _isHovered
+              ? FontWeight.bold
+              : FontWeight.normal,
+          fontSize: 16,
+        ),
+        overflow: TextOverflow.ellipsis, // Ensure text doesn't overflow
+      ),
+    ),
+  ],
+),
+
         ),
       ),
     );

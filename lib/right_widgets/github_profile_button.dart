@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portofolio/view.dart';
+import 'package:portofolio/right_widgets/underlined_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GithubProfileButton extends StatelessWidget {
@@ -18,7 +18,7 @@ class GithubProfileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewButton(
+    return UnderlinedButton(
       onTap: _openLink, 
       title: 'GitHub Profile',);
   }

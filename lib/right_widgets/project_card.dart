@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portofolio/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProjectCard extends StatefulWidget {
@@ -7,6 +8,7 @@ class ProjectCard extends StatefulWidget {
   final String description;
   final List<String> technologies;
   final String url;
+  final ImageProvider image;
 
   const ProjectCard({
     Key? key,
@@ -14,6 +16,7 @@ class ProjectCard extends StatefulWidget {
     required this.description,
     required this.technologies,
     required this.url,
+    required this.image,
   }) : super(key: key);
 
   @override
@@ -34,6 +37,11 @@ class _ProjectCardState extends State<ProjectCard> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
+
     return GestureDetector(
       onTap: () async {
         await _openLink(widget.url);
@@ -45,7 +53,7 @@ class _ProjectCardState extends State<ProjectCard> {
         child: Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: _isHovering ? Colors.grey[200] : Colors.transparent,
+            color: _isHovering ?  (isLightMode? Colors.grey[200] : Colors.grey[700]) : Colors.transparent,
             border: _isHovering ? Border.all(color: Colors.grey) : null,
             borderRadius: BorderRadius.circular(8),
           ),
@@ -57,19 +65,18 @@ class _ProjectCardState extends State<ProjectCard> {
                 child: Container(
                     decoration: const BoxDecoration(boxShadow: [
                       BoxShadow(
-                          color: Colors.black,
                           blurRadius: 2,
                           offset: Offset(0.3, 0.3))
                     ]),
-                    child: const Image(
-                      image: AssetImage('assets/befriend2.png'),
+                    child: Image(
+                      image: widget.image,
                       fit: BoxFit.cover,
                     )),
               ),
               Expanded(
                 flex: 7,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding:  EdgeInsets.symmetric(horizontal: 16.0/Constants.width*width),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -92,7 +99,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           }),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8/Constants.height*height),
                       Text(
                         widget.description,
                         style: GoogleFonts.openSans(),
@@ -104,7 +111,7 @@ class _ProjectCardState extends State<ProjectCard> {
                             .map((tech) => Chip(
                                   label:
                                       Text(tech, style: GoogleFonts.openSans()),
-                                  backgroundColor: Colors.grey[200],
+                                  backgroundColor: isLightMode? Colors.grey[200] : Colors.grey[750],
                                 ))
                             .toList(),
                       ),

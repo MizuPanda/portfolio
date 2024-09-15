@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:portofolio/left.dart';
+import 'package:portofolio/left_widgets/left.dart';
 import 'package:portofolio/provider.dart';
-import 'package:portofolio/right.dart';
+import 'package:portofolio/right_widgets/right.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -13,43 +13,56 @@ class MyPortfolio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+   return MaterialApp(
       title: 'Juniel Djossou',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       home: const PortfolioPage(),
     );
-  }
+}
 }
 
 class PortfolioPage extends StatelessWidget {
   const PortfolioPage({super.key});
 
- 
   @override
   Widget build(BuildContext context) {
+    // Check if the device is an iPhone or the screen is narrow
+    //final bool isNarrow = MediaQuery.of(context).size.width < 600;  // Adjust this threshold based on your design needs
+
     return Scaffold(
       body: ChangeNotifierProvider(
         create: (_) => AppProvider(),
-        child: Row(
-          children: [
-            // Left Column
-            const LeftColumn(),
-            //Vertical Line Separator
-            Container(
-              width: 1, // Width of the line
-              color: Colors.grey, // Color of the line
-              height:
-                  double.infinity, // Make the line take full height of the column
-            ),
-            // Right Column
-            const RightColumn(),
-          ],
-        ),
+        child: buildWideLayout(context),// isNarrow ? buildNarrowLayout(context) : buildWideLayout(context),
       ),
     );
   }
-}
 
+  Widget buildNarrowLayout(BuildContext context) {
+    return const SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          LeftColumn(),  // Left part of the website
+          RightColumn(), // Right part of the website
+        ],
+      ),
+    );
+  }
+
+  Widget buildWideLayout(BuildContext context) {
+    return Row(
+      children: [
+        const LeftColumn(),
+        Container(
+          width: 1,
+          color: Colors.grey,
+          height: double.infinity,
+        ),
+        const RightColumn()
+      ],
+    );
+  }
+}
